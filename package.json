@@ -1,0 +1,36 @@
+{
+  "name": "eslint-plugin-scoped-elements",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "lib": "lib",
+    "test": "tests"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "test": "npm run test:node",
+    "test:watch": "npm run test:node -- --watch",
+    "test:node": "mocha tests --recursive"
+  },
+  "keywords": [
+    "eslint",
+    "eslintplugin",
+    "eslint-plugin"
+  ],
+  "peerDependencies": {
+    "eslint": ">= 5"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^8.16.0",
+    "mocha": "^8.3.2"
+  },
+  "dependencies": {
+    "eslint-plugin-lit": "^1.6.1"
+  }
+}
