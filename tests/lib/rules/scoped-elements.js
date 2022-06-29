@@ -40,93 +40,11 @@ class MyElement extends ScopedElementsMixin(LitElement) {
   render() { return html\`<my-el></my-el>\`}
 }
 ` },
-    /** ✅ Static getter, reversed order */
-    {
-      code: `
-class MyElement extends ScopedElementsMixin(LitElement) {
-  render() { return html\`<my-el></my-el>\`}
-
-  static get scopedElements() {
-    return {
-      'my-el': MyEl
-    }
-  }
-}
-` },
-
-    /** ✅ Static class field */
-    {
-      code: `
-class MyElement extends ScopedElementsMixin(LitElement) {
-  static scopedElements = { 'my-el': MyEl }
-  render() { return html\`<my-el></my-el>\`}
-}
-` },
-    /** ✅ Static class field, reversed order */
-    {
-      code: `
-class MyElement extends ScopedElementsMixin(LitElement) {
-  render() { return html\`<my-el></my-el>\`}
-  static scopedElements = { 'my-el': MyEl }
-}
-` },
-
-    /** ✅ Lazy loaded */
-    {
-      code: `
-class MyElement extends ScopedElementsMixin(LitElement) {
-  firstUpdated() {
-    import('foo').then(m => this.defineScopedElement('my-el', m.MyEl));
-  }
-
-  render() { return html\`<my-el></my-el>\`}
-}
-` },
-    /** ✅ Lazy loaded, reversed order */
-    {
-      code: `
-class MyElement extends ScopedElementsMixin(LitElement) {
-  firstUpdated() {
-    import('foo').then(m => this.defineScopedElement('my-el', m.MyEl));
-  }
-
-  render() { return html\`<my-el></my-el>\`}
-}
-` },
-
-    //------------------------------------------------------------------------------
-    // EDGECASES
-    //------------------------------------------------------------------------------
-    /** ✅ ...super.scopedElements, edgecase: ignore for now, improve in the future */
-    {
-      code: `
-class MyElement extends ScopedElementsMixin(LitElement) {
-  static scopedElements = { ...super.scopedElements }
-  render() { return html\`<my-el></my-el>\`}
-}
-` },
-    /** ✅ ...super.scopedElements, edgecase: ignore for now, improve in the future */
-    {
-      code: `
-class MyElement extends ScopedElementsMixin(LitElement) {
-  static get scopedElements() { 
-    return { ...super.scopedElements }
-  }
-  render() { return html\`<my-el></my-el>\`}
-}
-` },
-    /** ✅ Dynamically defined, edgecase: ignore for now, improve in the future */
-    {
-      code: `
-class MyElement extends ScopedElementsMixin(LitElement) {
-  firstUpdated() {
-    this.defineScopedElement(foo, MyEl);
-  }
-
-  render() { return html\`<my-el></my-el>\`}
-}
-` },
   ],
+
+
+
+
 
   //------------------------------------------------------------------------------
   // ❌ INVALID
@@ -142,4 +60,7 @@ class MyElement extends ScopedElementsMixin(LitElement) {
       errors: [{ message: 'todo' }]
     }
   ]
+
+
+
 });
