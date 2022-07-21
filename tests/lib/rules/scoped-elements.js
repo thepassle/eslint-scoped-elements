@@ -132,14 +132,38 @@ class MyElement extends ScopedElementsMixin(LitElement) {
     // ❌ INVALID
     //------------------------------------------------------------------------------
     invalid: [
+      {
+        /** ❌ Not declared */
+        code: `
+class MyElement extends ScopedElementsMixin(LitElement) {
+render() { return html\`<my-el></my-el>\`}
+}
+    `,
+        errors: [{ message: 'Element not declared in static scopedElements' }]
+      },
+      {
+        /** ❌ Not declared */
+        code: `
+class MyElement extends ScopedElementsMixin(LitElement) {
+connectedCallback() {
+  super.connectedCallback();
+}
+render() { return html\`<my-el></my-el>\`}
+}
+    `,
+        errors: [{ message: 'Element not declared in static scopedElements' }]
+      },      
         {
-            /** ❌ Not declared */
             code: `
 class MyElement extends ScopedElementsMixin(LitElement) {
+  get scopedElements() {
+    return { 'my-el': MyEl}
+  }
+
   render() { return html\`<my-el></my-el>\`}
 }
       `,
-            errors: [{ message: 'todo' }]
+            errors: [{ message: 'Element not declared in static scopedElements' }]
         }
     ]
 });
