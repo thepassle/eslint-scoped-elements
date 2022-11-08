@@ -86,13 +86,36 @@ class MyElement extends ScopedElementsMixin(LitElement) {
         {
             code: `
 class MyElement extends ScopedElementsMixin(LitElement) {
+
+  render() { return html\`<my-el></my-el>\`}
   firstUpdated() {
     import('foo').then(m => this.defineScopedElement('my-el', m.MyEl));
   }
-
-  render() { return html\`<my-el></my-el>\`}
 }
 ` },
+        /** ✅ Lazy loaded, async/await */
+        {
+            code: `
+class MyElement extends ScopedElementsMixin(LitElement) {
+
+  render() { return html\`<my-el></my-el>\`}
+  async firstUpdated() {
+    await import('foo').then(m => this.defineScopedElement('my-el', m.MyEl));
+  }
+}
+` },
+        /** ✅ Lazy loaded, identifier as argument */
+        {
+            code: `
+class MyElement extends ScopedElementsMixin(LitElement) {
+
+  render() { return html\`<my-el></my-el>\`}
+  async firstUpdated() {
+    await import('foo').then(({foo}) => this.defineScopedElement('my-el', foo));
+  }
+}
+` },
+
 
         //------------------------------------------------------------------------------
         // EDGECASES
@@ -109,7 +132,7 @@ class MyElement extends ScopedElementsMixin(LitElement) {
         {
             code: `
 class MyElement extends ScopedElementsMixin(LitElement) {
-  static get scopedElements() { 
+  static get scopedElements() {
     return { ...super.scopedElements }
   }
   render() { return html\`<my-el></my-el>\`}
@@ -143,16 +166,16 @@ render() { return html\`<my-el></my-el>\`}
       },
       {
         /** ❌ Not declared */
-        code: `
+            code: `
 class MyElement extends ScopedElementsMixin(LitElement) {
-connectedCallback() {
-  super.connectedCallback();
-}
-render() { return html\`<my-el></my-el>\`}
+  connectedCallback() {
+    super.connectedCallback();
+  }
+  render() { return html\`<my-el></my-el>\`}
 }
     `,
         errors: [{ message: 'Element not declared in static scopedElements' }]
-      },      
+      },
         {
             code: `
 class MyElement extends ScopedElementsMixin(LitElement) {
@@ -164,6 +187,18 @@ class MyElement extends ScopedElementsMixin(LitElement) {
 }
       `,
             errors: [{ message: 'Element not declared in static scopedElements' }]
-        }
+        },
+        {
+            /** ❌ Not declared with mulptiple Mixins */
+            code: `
+class MyElement extends LocalizeMixin(ScopedElementsMixin(LitElement)) {
+  connectedCallback() {
+    super.connectedCallback();
+  }
+  render() { return html\`<my-el></my-el>\`}
+}
+    `,
+            errors: [{ message: 'Element not declared in static scopedElements' }]
+        },
     ]
 });
